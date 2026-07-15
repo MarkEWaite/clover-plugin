@@ -1,6 +1,8 @@
 package hudson.plugins.clover;
 
-import hudson.FilePath;
+import org.junit.jupiter.api.Test;
+import org.openclover.ci.AntIntegrationListener;
+import hudson.util.LogTaskListener;
 import hudson.Launcher;
 import hudson.Proc;
 import hudson.model.TaskListener;
@@ -20,6 +22,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.atlassian.clover.api.ci.CIOptions;
+
 import static hudson.plugins.clover.CloverBuildWrapper.CloverDecoratingLauncher.isAnt;
 import static hudson.plugins.clover.CloverBuildWrapper.CloverDecoratingLauncher.isAntBat;
 import static hudson.plugins.clover.CloverBuildWrapper.CloverDecoratingLauncher.isCmdExe;
@@ -32,10 +36,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-public class CloverBuildWrapperTest {
+class CloverBuildWrapperTest {
 
     @Test
-    public void testTrimDoubleQuotes() {
+    void testTrimDoubleQuotes() {
         assertThat(trimDoubleQuotes.apply(null), nullValue());
         assertThat(trimDoubleQuotes.apply(""), equalTo(""));
         assertThat(trimDoubleQuotes.apply("\"abc"), equalTo("abc"));
@@ -45,7 +49,7 @@ public class CloverBuildWrapperTest {
     }
 
     @Test
-    public void testIsCmdExe() {
+    void testIsCmdExe() {
         assertThat(isCmdExe(Arrays.asList("c:\\windows\\cmd.exe", "echo")), is(false));
         assertThat(isCmdExe(Arrays.asList("c:\\windows\\cmd.exe", "/c")), is(false));
         assertThat(isCmdExe(Arrays.asList("c:\\windows\\cmd.exe", "/C")), is(true));
@@ -54,7 +58,7 @@ public class CloverBuildWrapperTest {
     }
 
     @Test
-    public void testIsAntBat() {
+    void testIsAntBat() {
         assertThat(isAntBat(Arrays.asList("c:\\ant\\ant.bat", "echo")), is(true));
         assertThat(isAntBat(Arrays.asList("ant.bat", "echo")), is(true));
         assertThat(isAntBat(Arrays.asList("/usr/bin/ant", "echo")), is(false));
@@ -62,7 +66,7 @@ public class CloverBuildWrapperTest {
     }
 
     @Test
-    public void testIsAnt() {
+    void testIsAnt() {
         assertThat(isAnt(Arrays.asList("c:\\ant\\ant.bat", "echo")), is(false));
         assertThat(isAnt(Arrays.asList("ant.bat", "echo")), is(false));
         assertThat(isAnt(Arrays.asList("/usr/bin/ant", "echo")), is(true));
@@ -70,22 +74,22 @@ public class CloverBuildWrapperTest {
     }
 
     @Test
-    public void testSplitArgumentsIntoPreUserPost() {
+    void testSplitArgumentsIntoPreUserPost() {
         List<String> pre = new ArrayList<>();
         List<String> user = new ArrayList<>();
         List<String> post = new ArrayList<>();
 
         splitArgumentsIntoPreUserPost(Arrays.asList("ant", "clean", "test", "&&", "exit", "1"),
                 pre, user, post, true);
-        
+
         assertThat(pre, contains("ant"));
         assertThat(user, contains("clean", "test"));
         assertThat(post, contains("&&", "exit", "1"));
     }
 
     @Test
-    public void testDecoratingLauncherOnWindowsOldJenkins() throws IOException {
-        TaskListener listener = new LogTaskListener(Logger.getLogger("testDecoratingLauncherOnWindowsOldJenkins"), Level.ALL);
+    void testDecoratingLauncherOnWindowsOldJenkins() throws IOException {
+        TaskListener listener = new LogTaskListener(Logger.getLogger(CloverBuildWrapperTest.class.getName()), Level.ALL);
         Launcher outer = new Launcher.LocalLauncher(listener);
         CIOptions.Builder options = new CIOptions.Builder();
         CloverBuildWrapper wrapper = new CloverBuildWrapper(true, true, null, false);
@@ -118,8 +122,8 @@ public class CloverBuildWrapperTest {
     }
 
     @Test
-    public void testDecoratingLauncherOnWindowsNewJenkins() throws IOException {
-        TaskListener listener = new LogTaskListener(Logger.getLogger("testDecoratingLauncherOnWindowsNewJenkins"), Level.ALL);
+    void testDecoratingLauncherOnWindowsNewJenkins() throws IOException {
+        TaskListener listener = new LogTaskListener(Logger.getLogger(CloverBuildWrapperTest.class.getName()), Level.ALL);
         Launcher outer = new Launcher.LocalLauncher(listener);
         CIOptions.Builder options = new CIOptions.Builder();
         CloverBuildWrapper wrapper = new CloverBuildWrapper(true, true, null, false);
@@ -152,8 +156,8 @@ public class CloverBuildWrapperTest {
     }
 
     @Test
-    public void testDecoratingLauncherOnLinux() throws IOException {
-        TaskListener listener = new LogTaskListener(Logger.getLogger("testDecoratingLauncherOnLinux"), Level.ALL);
+    void testDecoratingLauncherOnLinux() throws IOException {
+        TaskListener listener = new LogTaskListener(Logger.getLogger(CloverBuildWrapperTest.class.getName()), Level.ALL);
         Launcher outer = new Launcher.LocalLauncher(listener);
         CIOptions.Builder options = new CIOptions.Builder();
         CloverBuildWrapper wrapper = new CloverBuildWrapper(true, true, null, false);

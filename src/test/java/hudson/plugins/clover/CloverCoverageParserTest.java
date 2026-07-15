@@ -1,29 +1,26 @@
 package hudson.plugins.clover;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import hudson.plugins.clover.results.PackageCoverage;
 import hudson.plugins.clover.results.ProjectCoverage;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
 /**
  * CloverCoverageParser Tester.
  */
-public class CloverCoverageParserTest {
+class CloverCoverageParserTest {
 
     @Test
-    public void testFailureMode1() throws Exception {
-        try {
-            CloverCoverageParser.parse(null, "");
-        } catch (NullPointerException e) {
-            assertTrue("Expected exception thrown", true);
-        }
+    void testFailureMode1() {
+        assertThrows(NullPointerException.class, () -> CloverCoverageParser.parse(null, ""));
     }
 
     @Test
-    public void testParse() throws Exception {
+    void testParse() throws Exception {
         ProjectCoverage result = CloverCoverageParser.parse(getClass().getResourceAsStream("clover.xml"));
         assertNotNull(result);
         assertEquals(ProjectCoverage.class, result.getClass());
@@ -36,7 +33,7 @@ public class CloverCoverageParserTest {
     }
 
     @Test
-    public void testParseMultiPackage() throws Exception {
+    void testParseMultiPackage() throws Exception {
         ProjectCoverage result = CloverCoverageParser.parse(getClass().getResourceAsStream("clover-two-packages.xml"));
         result = CloverCoverageParser.trimPaths(result, "C:\\local\\maven\\helpers\\hudson\\clover\\");
         assertNotNull(result);
@@ -46,5 +43,4 @@ public class CloverCoverageParserTest {
         assertEquals(2, result.getPackageCoverages().size());
         assertEquals(14, result.findClassCoverage("hudson.plugins.clover.results.AbstractCloverMetrics").getCoveredmethods());
     }
-
 }

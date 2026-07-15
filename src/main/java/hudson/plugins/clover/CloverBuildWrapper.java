@@ -22,10 +22,13 @@ import hudson.util.DescribableList;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 import org.openclover.ci.AntIntegrationListener;
 import org.openclover.ci.CIOptions;
 import org.openclover.core.util.ClassPathUtil;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.File;
 import java.io.IOException;
@@ -150,7 +153,7 @@ public class CloverBuildWrapper extends BuildWrapper {
 
 
         @Override
-        public boolean configure(StaplerRequest req, JSONObject json) {
+        public boolean configure(StaplerRequest2 req, JSONObject json) {
             req.bindParameters(this, "clover.");
             save();
             return true;
@@ -379,12 +382,17 @@ public class CloverBuildWrapper extends BuildWrapper {
          * Copied from {@link org.openclover.ci.AntIntegrator#isWindows()}
          */
         private static boolean isWindows() {
-            try {
-                final String osName = System.getProperty("os.name");
-                return osName != null && osName.toLowerCase().indexOf("windows") == 0;
-            } catch (SecurityException ex) {
-                return false;
-            }
+            final String osName = AccessController.doPrivileged(new PrivilegedAction<String>() {
+                @Override
+                public String run() {
+                    try {
+                        return System.getProperty("os.name");
+                    } catch (SecurityException ex) {
+                        return null;
+                    }
+                }
+            });
+            return osName != null && osName.toLowerCase().indexOf("windows") == 0;
         }
     }
 
