@@ -32,7 +32,6 @@ import org.jvnet.hudson.test.TouchBuilder;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 @WithJenkins
 class CloverBuildActionTest {

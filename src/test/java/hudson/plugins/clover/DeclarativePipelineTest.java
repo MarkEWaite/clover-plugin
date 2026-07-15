@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 

@@ -1,15 +1,13 @@
 package hudson.plugins.clover;
 
-import org.junit.jupiter.api.Test;
-import org.openclover.ci.AntIntegrationListener;
-import hudson.util.LogTaskListener;
+import hudson.FilePath;
 import hudson.Launcher;
 import hudson.Proc;
 import hudson.model.TaskListener;
 import hudson.remoting.Channel;
 import hudson.util.LogTaskListener;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openclover.ci.AntIntegrationListener;
 import org.openclover.ci.CIOptions;
 
@@ -21,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.atlassian.clover.api.ci.CIOptions;
 
 import static hudson.plugins.clover.CloverBuildWrapper.CloverDecoratingLauncher.isAnt;
 import static hudson.plugins.clover.CloverBuildWrapper.CloverDecoratingLauncher.isAntBat;
