@@ -1,4 +1,4 @@
-_extends: .github
+_extends: github:jenkinsci/.github:/.github/release-drafter.yml
 version-template: $MAJOR.$MINOR.$PATCH
 tag-template: clover-$NEXT_PATCH_VERSION
 
