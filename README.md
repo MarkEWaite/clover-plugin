@@ -15,9 +15,9 @@ Jenkins will generate and track code coverage across time.
 
 ## Automatic integration for Ant builds
 
-Clover can be integrated into Ant-based builds without the need to modify the build.xml
-![(star)](docs/images/star_yellow.svg)
-. Simply check the *"Automatically record and report Code Coverage"* checkbox in the Job configuration screen.
+Clover can be integrated into Ant-based builds without the need to modify the build.xml.
+Simply check the *"Automatically record and report code coverage using OpenClover"* checkbox in the
+Build Environment section of the Job configuration screen.
 
 ![](docs/images/clover-one-click.png)
 
@@ -25,17 +25,15 @@ The Clover plugin will add an Ant build listener and appropriate configuration p
 
 These will automatically be linked from the Job and Build pages.
 
-![(star)](docs/images/star_yellow.svg)
-It works for typical build configurations in which unit tests are launched after compilation.
-In case you spawn processes, run in-container tests, deploy application to another machine, etc., then the automatic integration will not be sufficient and you'll have to set up integration manually.
+> **Note:** this works for typical build configurations in which unit tests are launched after compilation.
+> In case you spawn processes, run in-container tests, deploy application to another machine, etc., then the
+> automatic integration will not be sufficient and you'll have to set up integration manually.
 
 ![](docs/images/clover-treemap.png)
 
 ## Viewing the report
 
-[![](docs/images/twitter3.png)](http://twitter.com/cloverallover)
-
-As soon as build is finished, click on the "Clover HTML report" link to display the code coverage report.
+As soon as build is finished, click on the "OpenClover HTML coverage report" link to display the code coverage report.
 
 Jenkins content security policy blocks any active content in published artficats.
 As a result, when you click on the link, it will display the "Loading dashboard.html..." message instead of the report.
@@ -58,11 +56,11 @@ In case of trouble, you may have a look at the [Atlassian Community](https://com
     PDF). The plugin will not extract any information from these
     reports, but will use them as a better formatted most recent
     coverage report when they are available.
-4.  Enable the "Publish Clover Coverage Report" publisher
+4.  Enable the "Publish OpenClover coverage report" publisher
 5.  Specify the directory where the clover.xml report is generated.
 6.  **Optional:** Configure the coverage metric targets to reflect your
     goals.
-    ![](docs/images/clover-config.gif)
+    ![](docs/images/clover-config.png)
 
 ## Configuring with Jenkins Pipeline jobs
 
@@ -105,7 +103,7 @@ A scripted Pipeline syntax example:
 ``` groovy
 node('!windows') { // sh not available on Windows, use bat or powershell instead
   stage('Checkout') {
-    git 'https://github.com/MarkEWaite/platformlabeler-plugin.git'
+    git 'https://github.com/jenkinsci/platformlabeler-plugin.git'
   }
   stage('Test') {
     sh 'mvn clean clover:setup test clover:aggregate clover:clover'
@@ -147,7 +145,7 @@ clover:instrument clover:aggregate
 -N clover:aggregate clover:clover
 ```
 
--   Enable the "Publish Clover Coverage Report" publisher.
+-   Enable the "Publish OpenClover coverage report" publisher.
 -   Depending on your Source Code Management, the clover report
     directory will either be "target/site/clover" or
     "*module-name*/target/site/clover"
