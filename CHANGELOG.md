@@ -1,5 +1,9 @@
 # Version history
 
+## Version 5.0.0 (July 16, 2026)
+
+- Upgrade to OpenClover 5.0.0, see the [OpenClover 5.0.0 release notes](https://openclover.org/doc/openclover-5.0.0-release-notes.html)
+
 ## Version 4.15.0 (December 4, 2025)
 
 - JENKINS-76093 Support multiple Clover reports per build
