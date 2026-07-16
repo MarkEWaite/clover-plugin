@@ -177,6 +177,19 @@ public class CloverPublisher extends Recorder implements SimpleBuildStep {
         return (reportId == null || reportId.isEmpty()) ? "clover.xml" : "clover-" + reportId + ".xml";
     }
 
+    /**
+     * Gets the ZIP file where the Clover HTML report is stored for the given build with a specific reportId.
+     */
+    static File getCloverHtmlReport(Run<?, ?> build, String reportId) {
+        return new File(build.getRootDir(), getCloverHtmlReportFileName(reportId));
+    }
+
+    static String getCloverHtmlReportFileName(String reportId) {
+        return (reportId == null || reportId.isEmpty())
+                ? "clover-html-report.zip"
+                : "clover-html-report-" + reportId + ".zip";
+    }
+
     static String forReport(String reportId) {
         return (reportId == null || reportId.isEmpty()) ? "" : " for " + reportId;
     }
@@ -215,11 +228,11 @@ public class CloverPublisher extends Recorder implements SimpleBuildStep {
                 return;
             }
 
-            final boolean htmlExists = copyHtmlReport(coverageReportDir, buildTarget, listener);
+            final boolean htmlExists = zipHtmlReport(coverageReportDir, buildTarget, listener);
             copyXmlReport(coverageReportDir, buildTarget, listener, env.expand(getCloverReportFileName()));
 
             if (htmlExists) {
-                run.addAction(new CloverHtmlBuildAction());
+                run.addAction(new CloverHtmlBuildAction(reportId));
             }
             processCloverXml(run, workspace, listener, coverageReportDir, buildTarget);
 
@@ -307,7 +320,7 @@ public class CloverPublisher extends Recorder implements SimpleBuildStep {
         return true;
     }
 
-    private boolean copyHtmlReport(FilePath coverageReport, FilePath buildTarget, TaskListener listener)
+    private boolean zipHtmlReport(FilePath coverageReport, FilePath buildTarget, TaskListener listener)
             throws IOException, InterruptedException {
         final FilePath htmlIndexHtmlPath = findOneDirDeep(coverageReport, "index.html");
         if (!htmlIndexHtmlPath.exists()) {
@@ -319,8 +332,8 @@ public class CloverPublisher extends Recorder implements SimpleBuildStep {
             listener.getLogger().println("Parent directory of " + htmlIndexHtmlPath.getRemote() + " is null, not publishing Clover HTML report.");
             return false;
         }
-        listener.getLogger().println("Publishing Clover HTML report...");
-        htmlDirPath.copyRecursiveTo("**/*", buildTarget);
+        listener.getLogger().println("Publishing Clover HTML report as a ZIP archive...");
+        htmlDirPath.zip(buildTarget.child(getCloverHtmlReportFileName(reportId)));
         return true;
     }
 

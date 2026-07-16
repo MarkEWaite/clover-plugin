@@ -35,12 +35,11 @@ In case you spawn processes, run in-container tests, deploy application to anoth
 
 [![](docs/images/twitter3.png)](http://twitter.com/cloverallover)
 
-As soon as build is finished, click on the "Clover HTML report" link to display the code coverage report.
+As soon as build is finished, click on the "OpenClover HTML Report" link to download the code coverage report.
 
-Jenkins content security policy blocks any active content in published artficats.
-As a result, when you click on the link, it will display the "Loading dashboard.html..." message instead of the report.
-In order to fix it, you must relax the policy to allow JavaScript, CSS and images.
-See [configuring content security policy](https://www.jenkins.io/doc/book/security/configuring-content-security-policy/) for more details.
+The HTML report is served as a ZIP archive. This avoids Jenkins' content security policy, which blocks the
+active content (JavaScript, CSS, images) in published artifacts and would otherwise render the report unusable
+in the browser. Simply download the ZIP, extract it and open `index.html` locally to view the full report.
 
 ## Clover documentation
 
