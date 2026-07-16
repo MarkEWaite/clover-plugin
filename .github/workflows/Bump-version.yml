@@ -34,8 +34,8 @@ jobs:
           mvn --no-transfer-progress versions:set-property -Dproperty=revision "-DnewVersion=${{ inputs.pluginVersion }}" -DgenerateBackupPoms=false
           mvn --no-transfer-progress versions:set-property -Dproperty=clover.version "-DnewVersion=${{ inputs.opencloverVersion }}" -DgenerateBackupPoms=false
           git add .
-          git commit -m "Prepare release tag clover-${{ inputs.releaseVersion }}"
-          git tag clover-${{ inputs.releaseVersion }}
-          echo "Pushing commits and tag clover-${{ inputs.releaseVersion }}"
+          git commit -m "Prepare release tag clover-${{ inputs.pluginVersion }}"
+          git tag clover-${{ inputs.pluginVersion }}
+          echo "Pushing commits and tag clover-${{ inputs.pluginVersion }}"
           git push origin
-          git push origin clover-${{ inputs.releaseVersion }}
+          git push origin clover-${{ inputs.pluginVersion }}
