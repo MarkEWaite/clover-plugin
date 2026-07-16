@@ -31,6 +31,8 @@ import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TouchBuilder;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
+import java.io.InputStream;
+
 @WithJenkins
 class CloverBuildActionTest {
 
@@ -64,8 +66,12 @@ class CloverBuildActionTest {
     void testExpireAfterAccessWorkflow() throws Exception {
         WorkflowJob pipeline = j.jenkins.createProject(WorkflowJob.class, "TestCloverBuildActionWorkflow");
         FilePath workspace = j.jenkins.getWorkspaceFor(pipeline);
+        assertNotNull(workspace);
         FilePath mavenSettings = workspace.child("target").child("site").child("clover.xml");
-        mavenSettings.copyFrom(CloverWorkflowTest.class.getResourceAsStream("/hudson/plugins/clover/clover.xml"));
+        InputStream cloverXmlStream = CloverWorkflowTest.class.getResourceAsStream("/hudson/plugins/clover/clover.xml");
+        assertNotNull(cloverXmlStream);
+        mavenSettings.copyFrom(cloverXmlStream);
+
         pipeline.setDefinition(new CpsFlowDefinition(
                 """
                 node {

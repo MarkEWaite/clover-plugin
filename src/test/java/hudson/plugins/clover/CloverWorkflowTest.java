@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
+import java.io.InputStream;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @WithJenkins
@@ -27,8 +29,11 @@ class CloverWorkflowTest {
     void cloverPublisherWorkflowStep() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "cloverPublisherWorkflowStep");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
+        assertNotNull(workspace);
         FilePath mavenSettings = workspace.child("target").child("site").child("clover.xml");
-        mavenSettings.copyFrom(CloverWorkflowTest.class.getResourceAsStream("/hudson/plugins/clover/clover.xml"));
+        InputStream cloverXmlStream = CloverWorkflowTest.class.getResourceAsStream("/hudson/plugins/clover/clover.xml");
+        assertNotNull(cloverXmlStream);
+        mavenSettings.copyFrom(cloverXmlStream);
 
         job.setDefinition(new CpsFlowDefinition(
                         "node {\n" +
@@ -57,8 +62,11 @@ class CloverWorkflowTest {
     void cloverPublisherKeywordCloverStep() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "cloverPublisherKeywordCloverStep");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
+        assertNotNull(workspace);
         FilePath mavenSettings = workspace.child("target").child("site").child("clover.xml");
-        mavenSettings.copyFrom(CloverWorkflowTest.class.getResourceAsStream("/hudson/plugins/clover/clover.xml"));
+        InputStream cloverXmlStream = CloverWorkflowTest.class.getResourceAsStream("/hudson/plugins/clover/clover.xml");
+        assertNotNull(cloverXmlStream);
+        mavenSettings.copyFrom(cloverXmlStream);
 
         job.setDefinition(new CpsFlowDefinition(
                         "node {\n" +

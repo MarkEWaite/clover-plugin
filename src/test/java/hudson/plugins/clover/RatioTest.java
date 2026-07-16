@@ -14,22 +14,23 @@ class RatioTest {
      */
     @Test
     void testParseValue() {
-        assertEquals(1.0f, Ratio.create(1,2).numerator);
-        assertEquals(2.0f, Ratio.create(1,2).denominator);
+        assertEquals(1.0f, Ratio.create(1,2).numerator, 1e-4);
+        assertEquals(2.0f, Ratio.create(1,2).denominator, 1e-4);
     }
 
     /**
      * Tests that {@link Ratio#getPercentageFloat()} handles appropriate
      * values for numerator and denominator.  Specifically:
-     *
+     * <br/>
      * 1 - Ratios where the denominator is 0 (no tests), return 100%.
      * 2 - All other ratios return the numerator / denominator.
-     *
+     * 2 - All other ratios return the numerator / denominator.
+     * <br/>
      * There is a case here that is in the code, but is caused by invalid data:
      * 3 - The numerator is larger than the denominator.
-     *
+     * <br/>
      * There are other invalid data points as well:
-     *
+     * <br/>
      * 4 - Numerator is larger than the denominator
      * 5 - Either the numerator or the denominator is < 0
      */
